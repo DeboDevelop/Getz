@@ -55,25 +55,25 @@ def sort_descending():
 
 def menu():
     # create()
-    # while True:
-    #     Description=str(input("Enter the description: "))
-    #     Remind = int(input("Do you want to Remind. Press 0 for No and Press 1 for Yes: "))
-    #     if(Remind==1):
-    #         date=int(input("Enter the date: "))
-    #         month=int(input("Enter the month: "))
-    #         year=int(input("Enter the year: "))
-    #         hour=int(input("Enter the hour: "))
-    #         minute=int(input("Enter the min: "))
-    #         Dt = datetime.datetime(year, month, date, hour, minute, 0)
-    #         insert_data(Description, Remind, Dt)
-    #     elif(Remind==0):
-    #         insert_data(Description, Remind)
-    #     choice=int(input("Do you want to insert more. Press 0 for No and Press 1 for Yes: "))
-    #     if(choice==0):
-    #         break
+    while True:
+        Description=str(input("Enter the description: "))
+        Remind = int(input("Do you want to Remind. Press 0 for No and Press 1 for Yes: "))
+        if(Remind==1):
+            date=int(input("Enter the date: "))
+            month=int(input("Enter the month: "))
+            year=int(input("Enter the year: "))
+            hour=int(input("Enter the hour: "))
+            minute=int(input("Enter the min: "))
+            Dt = datetime.datetime(year, month, date, hour, minute, 0)
+            insert_data(Description, Remind, Dt)
+        elif(Remind==0):
+            insert_data(Description, Remind)
+        choice=int(input("Do you want to insert more. Press 0 for No and Press 1 for Yes: "))
+        if(choice==0):
+            break
 
-    # del_id=int(input("Enter the id to delete: "))
-    # delete_data(del_id)
+    del_id=int(input("Enter the id to delete: "))
+    delete_data(del_id)
 
     display_data()
     sort_ascending()
