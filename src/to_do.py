@@ -36,6 +36,7 @@ def insert_data(Description, Remind, Dt=None):
 def display_data():
     c.execute("SELECT * FROM memo")
     data=c.fetchall()
+    print(data)
     return data
     # for d in data:
     #     print(d[1], end=" ")
@@ -145,7 +146,7 @@ def update_listbox():
     clear_listbox()
     tasks=display_data()
     for task in tasks:
-         lb_tasks.insert("end",task[1])
+         lb_tasks.insert("end",task)
     '''the above loop inserts tasks from tasks[] to the LISTBOX'''
     '''instead of loop, it should read description WITH OR WITHOUT date and time'''
     '''Then insert description WITH OR WITHOUT date and time containing date and time to the list box from table'''
@@ -205,9 +206,12 @@ def add_task():
             tmg.showinfo("As your wish",msg)
             '''add a func. to append_description WITHOUT date and time from task'''
         
-        lt.split("-")
+        year=lt[0:4]
+        month=lt[5:7]
+        date=lt[8:]
+        print(year)
         #Dt = datetime.datetime(year, month, date, hour, minute, 0)
-        Dt = datetime.datetime(lt[0], lt[1], lt[2], 0, 0, 0)
+        Dt = datetime.datetime(2019, 4, 14, 0, 0, 0)
         if(value == 'yes'):
             remind=1
         else:
@@ -267,7 +271,7 @@ def add_task_with_enter(event):
             
         lt.split("-")
         #Dt = datetime.datetime(year, month, date, hour, minute, 0)
-        Dt = datetime.datetime(lt[0], lt[1], lt[2], 0, 0, 0)
+        Dt = datetime.datetime(2019, 4, 14, 0, 0, 0)
         if(value == 'yes'):
             remind=1
         else:
@@ -283,7 +287,7 @@ def add_task_with_enter(event):
         
 def delete_all():
     delete_all()
-    tasks=[]
+    global tasks=[]
     '''call func. to delete all the events in the table'''
     update_listbox()
 
