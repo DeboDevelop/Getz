@@ -141,7 +141,9 @@ def number_of_data():
     # conn.close()
 
 tasks=[]
-lt=[]
+year="AAA"
+month="BBB"
+date="CCC"
 '''tasks[] stores description of the events as list'''
 
 '''This func. updates LISTBOX of the prog.'''
@@ -163,12 +165,17 @@ def clear_listbox():
 '''This func. Adds task'''
 def add_task():
     
-    global lt
+    
     '''This func. updates date'''
     def dateentry():
         def app_sel():
-            
-            lt=cal.get_date()
+            global year
+            global month
+            global date
+            year=cal.get_date().strftime("%Y")
+            month=cal.get_date().strftime("%m")
+            data=cal.get_date().strftime("%d")
+            # print(year)
 
             '''cal.get_date() gets the selected date in format YYYY-MM-DD'''
             '''command=print() func. should be changed to func. table_append_date()'''
@@ -207,9 +214,12 @@ def add_task():
             ttk.Button(newwin, text='Time', command=addtime).pack(padx=10, pady=10)
             '''Calls addtime()'''
 
-            year=lt[0:4]
-            month=lt[5:7]
-            date=lt[8:]
+            # year=lt[0:4]
+            # month=lt[5:7]
+            # date=lt[8:]
+            global year
+            global month
+            global date
             print(year)
             print(month)
             print(date)
@@ -273,12 +283,12 @@ def add_task_with_enter(event):
             ttk.Button(newwin, text='Time', command=addtime).pack(padx=10, pady=10)
             '''Calls addtime()'''
 
-            year=lt[0:4]
-            month=lt[5:7]
-            date=lt[8:]
-            print(year)
-            print(month)
-            print(date)
+            # year=lt[0:4]
+            # month=lt[5:7]
+            # date=lt[8:]
+            # print(year)
+            # print(month)
+            # print(date)
             #Dt = datetime.datetime(year, month, date, hour, minute, 0)
             Dt = datetime.datetime(2019, 4, 14, 0, 0, 0)
             remind=1
