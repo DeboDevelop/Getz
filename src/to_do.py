@@ -36,7 +36,6 @@ def insert_data(Description, Remind, Dt=None):
 def display_data():
     c.execute("SELECT * FROM memo")
     data=c.fetchall()
-    print(data)
     return data
     # for d in data:
     #     print(d[1], end=" ")
@@ -80,8 +79,12 @@ def sort_descending():
         sort_data.append(d[1])
     sort_data.sort()
     sort_data.reverse()
-    for d in sort_data:
-        print(d)
+    return sort_data
+
+def number_of_data():
+    c.execute("SELECT * FROM memo")
+    data=c.fetchall()
+    return len(data)
 
 # def menu():
 #     #create()
@@ -144,6 +147,7 @@ lt=[]
 '''This func. updates LISTBOX of the prog.'''
 def update_listbox():
     clear_listbox()
+    global tasks
     tasks=display_data()
     for task in tasks:
          lb_tasks.insert("end",task[1])
@@ -314,21 +318,27 @@ def delete():
     update_listbox()
     
 def sort_asc():
+    global tasks
     tasks=sort_ascending()
+    clear_listbox()
     '''instead of tasks[].sort, call a func. to sort the events acc. to date and time in table'''
-    update_listbox()
+    for task in tasks:
+         lb_tasks.insert("end",task)
 
 def sort_desc():
+    global tasks
     tasks=sort_descending()
+    clear_listbox()
     '''instead of tasks[].sort and .reverse(), call a func. to sort in desc. order the events acc. to date and time in table'''
-    update_listbox()
+    for task in tasks:
+         lb_tasks.insert("end",task)
 
-def choose_random():
-    task = random.choice(tasks)
-    display["text"] = task
+# def choose_random():
+#     task = random.choice(tasks)
+#     display["text"] = task
      
 def number_of_tasks():
-    num_of_tasks=len(tasks)
+    num_of_tasks=number_of_data()
     '''instead of len(tasks), call a func. to return the no. of events in table'''
     msg = "Number of tasks: %s" % num_of_tasks
     display["text"]=msg
