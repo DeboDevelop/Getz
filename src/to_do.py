@@ -54,9 +54,9 @@ def update_dt(ID, Dt):
                   {'ID': ID, 'Dt': Dt})         
 
 
-def delete_data(ID):
+def delete_data(Description):
     with conn:
-        c.execute("DELETE from memo WHERE ID = :ID", {'ID': ID})
+        c.execute("DELETE from memo WHERE Description = :Description", {'Description': Description})
 
 def delete_all():
     with conn:
@@ -69,8 +69,7 @@ def sort_ascending():
     for d in data:
         sort_data.append(d[1])
     sort_data.sort()
-    for d in sort_data:
-        print(d)
+    return sort_data
 
 def sort_descending():
     sort_data=[]
@@ -83,64 +82,62 @@ def sort_descending():
     for d in sort_data:
         print(d)
 
-def menu():
-    #create()
-    while True:
-        Description=str(input("Enter the description: "))
-        Remind = int(input("Do you want to Remind. Press 0 for No and Press 1 for Yes: "))
-        if(Remind==1):
-            date=int(input("Enter the date: "))
-            month=int(input("Enter the month: "))
-            year=int(input("Enter the year: "))
-            hour=int(input("Enter the hour: "))
-            minute=int(input("Enter the min: "))
-            Dt = datetime.datetime(year, month, date, hour, minute, 0)
-            insert_data(Description, Remind, Dt)
-        elif(Remind==0):
-            insert_data(Description, Remind)
-        wish=int(input("Do you want to Update. Press 0 for No and Press 1 for Yes: "))
-        if(wish==1):
-            k=int(input("Press 0 for Update Description and Press 1 for Update Date&Time and Press 2 for Update Both: "))
-            if(k==0):
-                ID=int(input("Enter the ID to Update: "))
-                Description=str(input("Enter the description: "))
-                update_data(ID, Description)
-            elif(k==1):
-                ID=int(input("Enter the ID to Update: "))
-                date=int(input("Enter the date: "))
-                month=int(input("Enter the month: "))
-                year=int(input("Enter the year: "))
-                hour=int(input("Enter the hour: "))
-                minute=int(input("Enter the min: "))
-                Dt = datetime.datetime(year, month, date, hour, minute, 0)
-                update_dt(ID, Dt)
-            elif(k==2):
-                ID=int(input("Enter the ID to Update: "))
-                Description=str(input("Enter the description: "))
-                date=int(input("Enter the date: "))
-                month=int(input("Enter the month: "))
-                year=int(input("Enter the year: "))
-                hour=int(input("Enter the hour: "))
-                minute=int(input("Enter the min: "))
-                Dt = datetime.datetime(year, month, date, hour, minute, 0)
-                update_data(ID, Description)
-                update_dt(ID, Dt)
-        choice=int(input("Do you want to Insert more. Press 0 for No and Press 1 for Yes: "))
-        if(choice==0):
-            break
+# def menu():
+#     #create()
+#     while True:
+#         Description=str(input("Enter the description: "))
+#         Remind = int(input("Do you want to Remind. Press 0 for No and Press 1 for Yes: "))
+#         if(Remind==1):
+#             date=int(input("Enter the date: "))
+#             month=int(input("Enter the month: "))
+#             year=int(input("Enter the year: "))
+#             hour=int(input("Enter the hour: "))
+#             minute=int(input("Enter the min: "))
+#             Dt = datetime.datetime(year, month, date, hour, minute, 0)
+#             insert_data(Description, Remind, Dt)
+#         elif(Remind==0):
+#             insert_data(Description, Remind)
+#         wish=int(input("Do you want to Update. Press 0 for No and Press 1 for Yes: "))
+#         if(wish==1):
+#             k=int(input("Press 0 for Update Description and Press 1 for Update Date&Time and Press 2 for Update Both: "))
+#             if(k==0):
+#                 ID=int(input("Enter the ID to Update: "))
+#                 Description=str(input("Enter the description: "))
+#                 update_data(ID, Description)
+#             elif(k==1):
+#                 ID=int(input("Enter the ID to Update: "))
+#                 date=int(input("Enter the date: "))
+#                 month=int(input("Enter the month: "))
+#                 year=int(input("Enter the year: "))
+#                 hour=int(input("Enter the hour: "))
+#                 minute=int(input("Enter the min: "))
+#                 Dt = datetime.datetime(year, month, date, hour, minute, 0)
+#                 update_dt(ID, Dt)
+#             elif(k==2):
+#                 ID=int(input("Enter the ID to Update: "))
+#                 Description=str(input("Enter the description: "))
+#                 date=int(input("Enter the date: "))
+#                 month=int(input("Enter the month: "))
+#                 year=int(input("Enter the year: "))
+#                 hour=int(input("Enter the hour: "))
+#                 minute=int(input("Enter the min: "))
+#                 Dt = datetime.datetime(year, month, date, hour, minute, 0)
+#                 update_data(ID, Description)
+#                 update_dt(ID, Dt)
+#         choice=int(input("Do you want to Insert more. Press 0 for No and Press 1 for Yes: "))
+#         if(choice==0):
+#             break
 
-    del_id=int(input("Enter the id to delete: "))
-    delete_data(del_id)
+#     del_id=int(input("Enter the id to delete: "))
+#     delete_data(del_id)
 
-    display_data()
-    sort_ascending()
-    sort_descending()
-    conn.close()
+#     display_data()
+#     sort_ascending()
+#     sort_descending()
+    # conn.close()
 
-menu()
-
-
-# tasks=[]
+tasks=[]
+lt=[]
 '''tasks[] stores description of the events as list'''
 
 '''This func. updates LISTBOX of the prog.'''
@@ -164,7 +161,8 @@ def add_task():
     '''This func. updates date'''
     def dateentry():
         def app_sel():
-            print(cal.get_date())
+            lt=cal.get_date()
+
             '''cal.get_date() gets the selected date in format YYYY-MM-DD'''
             '''command=print() func. should be changed to func. table_append_date()'''
         top = Toplevel(root)
@@ -206,8 +204,15 @@ def add_task():
             msg = "Ok! Fine!"
             tmg.showinfo("As your wish",msg)
             '''add a func. to append_description WITHOUT date and time from task'''
-            
-        tasks.append(task)
+        
+        lt.split("-")
+        #Dt = datetime.datetime(year, month, date, hour, minute, 0)
+        Dt = datetime.datetime(lt[0], lt[1], lt[2], 0, 0, 0)
+        if(value == 'yes'):
+            remind=1
+        else:
+            remind=0
+        insert_data(task, remind, Dt)
         update_listbox()
         text_input.delete(1.0,END)
 
@@ -221,7 +226,7 @@ def add_task_with_enter(event):
     '''This func. updates date'''
     def dateentry():
         def app_sel():
-            print(cal.get_date())
+            lt=cal.get_date()
             '''cal.get_date() gets the selected date in format YYYY-MM-DD'''
             '''command=print() func. should be changed to func. table_append_date()'''
         top = Toplevel(root)
@@ -260,7 +265,14 @@ def add_task_with_enter(event):
             tmg.showinfo("As your wish",msg)
             '''add a func. to append_description WITHOUT date and time from task'''
             
-        tasks.append(task)
+        lt.split("-")
+        #Dt = datetime.datetime(year, month, date, hour, minute, 0)
+        Dt = datetime.datetime(lt[0], lt[1], lt[2], 0, 0, 0)
+        if(value == 'yes'):
+            remind=1
+        else:
+            remind=0
+        insert_data(task, remind, Dt)
         update_listbox()
         text_input.delete(1.0,END)
 
@@ -270,28 +282,26 @@ def add_task_with_enter(event):
 
         
 def delete_all():
-    global tasks
-    tasks = []
+    delete_all()
+    tasks=[]
     '''call func. to delete all the events in the table'''
     update_listbox()
 
 def delete():
     task = lb_tasks.get("active")
     '''task stores the selected event to be deleted'''
-    if task in tasks:
-        tasks.remove(task)
-        '''First check if the event to be deleted is present in table or not'''
-        '''instead of remove(task),call del. func. to del. event from table'''
+    delete_data(task)
+    '''First check if the event to be deleted is present in table or not'''
+    '''instead of remove(task),call del. func. to del. event from table'''
     update_listbox()
     
 def sort_asc():
-    tasks.sort()
+    tasks=sort_ascending()
     '''instead of tasks[].sort, call a func. to sort the events acc. to date and time in table'''
     update_listbox()
 
 def sort_desc():
-    tasks.sort()
-    tasks.reverse()
+    tasks=sort_descending()
     '''instead of tasks[].sort and .reverse(), call a func. to sort in desc. order the events acc. to date and time in table'''
     update_listbox()
 
