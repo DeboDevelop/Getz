@@ -59,7 +59,7 @@ def delete_data(Description):
     with conn:
         c.execute("DELETE from memo WHERE Description = :Description", {'Description': Description})
 
-def delete_all():
+def delete_all_data():
     with conn:
         c.execute("DELETE from memo") 
 
@@ -146,7 +146,7 @@ def update_listbox():
     clear_listbox()
     tasks=display_data()
     for task in tasks:
-         lb_tasks.insert("end",task)
+         lb_tasks.insert("end",task[1])
     '''the above loop inserts tasks from tasks[] to the LISTBOX'''
     '''instead of loop, it should read description WITH OR WITHOUT date and time'''
     '''Then insert description WITH OR WITHOUT date and time containing date and time to the list box from table'''
@@ -159,9 +159,11 @@ def clear_listbox():
 '''This func. Adds task'''
 def add_task():
     
+    global lt
     '''This func. updates date'''
     def dateentry():
         def app_sel():
+            
             lt=cal.get_date()
 
             '''cal.get_date() gets the selected date in format YYYY-MM-DD'''
@@ -200,23 +202,25 @@ def add_task():
             
             ttk.Button(newwin, text='Time', command=addtime).pack(padx=10, pady=10)
             '''Calls addtime()'''
+
+            year=lt[0:4]
+            month=lt[5:7]
+            date=lt[8:]
+            print(year)
+            print(month)
+            print(date)
+            #Dt = datetime.datetime(year, month, date, hour, minute, 0)
+            Dt = datetime.datetime(2019, 4, 14, 0, 0, 0)
+            remind=1
+            insert_data(task, remind, Dt)
             
         else:
             msg = "Ok! Fine!"
             tmg.showinfo("As your wish",msg)
             '''add a func. to append_description WITHOUT date and time from task'''
-        
-        year=lt[0:4]
-        month=lt[5:7]
-        date=lt[8:]
-        print(year)
-        #Dt = datetime.datetime(year, month, date, hour, minute, 0)
-        Dt = datetime.datetime(2019, 4, 14, 0, 0, 0)
-        if(value == 'yes'):
-            remind=1
-        else:
             remind=0
-        insert_data(task, remind, Dt)
+            insert_data(task, remind)
+
         update_listbox()
         text_input.delete(1.0,END)
 
@@ -227,6 +231,7 @@ def add_task():
 '''This func. Adds task by pressing enter'''
 def add_task_with_enter(event):
     
+    global lt
     '''This func. updates date'''
     def dateentry():
         def app_sel():
@@ -263,20 +268,25 @@ def add_task_with_enter(event):
             '''Calls dateentry()'''
             ttk.Button(newwin, text='Time', command=addtime).pack(padx=10, pady=10)
             '''Calls addtime()'''
+
+            year=lt[0:4]
+            month=lt[5:7]
+            date=lt[8:]
+            print(year)
+            print(month)
+            print(date)
+            #Dt = datetime.datetime(year, month, date, hour, minute, 0)
+            Dt = datetime.datetime(2019, 4, 14, 0, 0, 0)
+            remind=1
+            insert_data(task, remind, Dt)
             
         else:
             msg = "Ok! Fine!"
             tmg.showinfo("As your wish",msg)
             '''add a func. to append_description WITHOUT date and time from task'''
-            
-        lt.split("-")
-        #Dt = datetime.datetime(year, month, date, hour, minute, 0)
-        Dt = datetime.datetime(2019, 4, 14, 0, 0, 0)
-        if(value == 'yes'):
-            remind=1
-        else:
             remind=0
-        insert_data(task, remind, Dt)
+            insert_data(task, remind)
+            
         update_listbox()
         text_input.delete(1.0,END)
 
@@ -286,8 +296,10 @@ def add_task_with_enter(event):
 
         
 def delete_all():
-    delete_all()
-    global tasks=[]
+    delete_all_data()
+    global tasks
+    tasks=[]
+
     '''call func. to delete all the events in the table'''
     update_listbox()
 
@@ -295,6 +307,8 @@ def delete():
     task = lb_tasks.get("active")
     '''task stores the selected event to be deleted'''
     delete_data(task)
+    global tasks
+    tasks=[]
     '''First check if the event to be deleted is present in table or not'''
     '''instead of remove(task),call del. func. to del. event from table'''
     update_listbox()
