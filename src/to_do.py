@@ -37,9 +37,6 @@ def display_data():
     c.execute("SELECT * FROM memo")
     data=c.fetchall()
     return data
-    # for d in data:
-    #     print(d[1], end=" ")
-    #     print(d[3])
 
 def update_data(ID, Description):
     with conn:
@@ -141,9 +138,6 @@ def number_of_data():
     # conn.close()
 
 tasks=[]
-year="AAA"
-month="BBB"
-date="CCC"
 '''tasks[] stores description of the events as list'''
 
 '''This func. updates LISTBOX of the prog.'''
@@ -169,13 +163,17 @@ def add_task():
     '''This func. updates date'''
     def dateentry():
         def app_sel():
-            global year
-            global month
-            global date
-            year=cal.get_date().strftime("%Y")
-            month=cal.get_date().strftime("%m")
-            data=cal.get_date().strftime("%d")
-            # print(year)
+            a=(cal.get_date())
+            year=a.strftime("%Y")
+            month=a.strftime("%m")
+            date=a.strftime("%d")
+            print(year)
+            print(month)
+            print(date)
+            #Dt = datetime.datetime(year, month, date, hour, minute, 0)
+            Dt = datetime.datetime(int(year), int(month), int(date), 0, 0, 0)
+            insert_data(task, 1, Dt)
+            update_listbox()
 
             '''cal.get_date() gets the selected date in format YYYY-MM-DD'''
             '''command=print() func. should be changed to func. table_append_date()'''
@@ -205,6 +203,7 @@ def add_task():
         '''if yes= description_append with date and time'''
         '''if no= description_append WITHOUT date and time'''
         if(value == 'yes'):
+           
             '''add a func. to append_description WITH date and time from task'''
             newwin = Toplevel(root)
             
@@ -212,30 +211,15 @@ def add_task():
             '''Calls dateentry()'''
             
             ttk.Button(newwin, text='Time', command=addtime).pack(padx=10, pady=10)
-            '''Calls addtime()'''
-
-            # year=lt[0:4]
-            # month=lt[5:7]
-            # date=lt[8:]
-            global year
-            global month
-            global date
-            print(year)
-            print(month)
-            print(date)
-            #Dt = datetime.datetime(year, month, date, hour, minute, 0)
-            Dt = datetime.datetime(2019, 4, 14, 0, 0, 0)
-            remind=1
-            insert_data(task, remind, Dt)
+            '''Calls addtime()'''          
             
         else:
             msg = "Ok! Fine!"
             tmg.showinfo("As your wish",msg)
             '''add a func. to append_description WITHOUT date and time from task'''
-            remind=0
-            insert_data(task, remind)
+            insert_data(task, 0)
+            update_listbox()
 
-        update_listbox()
         text_input.delete(1.0,END)
 
         display["text"]="Display"
@@ -249,9 +233,21 @@ def add_task_with_enter(event):
     '''This func. updates date'''
     def dateentry():
         def app_sel():
-            lt=cal.get_date()
+            a=(cal.get_date())
+            year=a.strftime("%Y")
+            month=a.strftime("%m")
+            date=a.strftime("%d")
+            print(year)
+            print(month)
+            print(date)
+            #Dt = datetime.datetime(year, month, date, hour, minute, 0)
+            Dt = datetime.datetime(int(year), int(month), int(date), 0, 0, 0)
+            insert_data(task, 1, Dt)
+            update_listbox()
             '''cal.get_date() gets the selected date in format YYYY-MM-DD'''
             '''command=print() func. should be changed to func. table_append_date()'''
+
+
         top = Toplevel(root)
         ttk.Label(top, text='Choose date').pack(padx=10, pady=10)
         cal = DateEntry(top, font="Arial 14", selectmode='day', locale='en_US',cursor="hand2")
@@ -282,26 +278,14 @@ def add_task_with_enter(event):
             '''Calls dateentry()'''
             ttk.Button(newwin, text='Time', command=addtime).pack(padx=10, pady=10)
             '''Calls addtime()'''
-
-            # year=lt[0:4]
-            # month=lt[5:7]
-            # date=lt[8:]
-            # print(year)
-            # print(month)
-            # print(date)
-            #Dt = datetime.datetime(year, month, date, hour, minute, 0)
-            Dt = datetime.datetime(2019, 4, 14, 0, 0, 0)
-            remind=1
-            insert_data(task, remind, Dt)
             
         else:
             msg = "Ok! Fine!"
             tmg.showinfo("As your wish",msg)
             '''add a func. to append_description WITHOUT date and time from task'''
-            remind=0
-            insert_data(task, remind)
+            insert_data(task, 0)
+            update_listbox()
             
-        update_listbox()
         text_input.delete(1.0,END)
 
         display["text"]="Display"
