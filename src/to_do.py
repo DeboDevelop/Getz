@@ -32,12 +32,19 @@ conn = sqlite3.connect("projects.db")
 c = conn.cursor()
 
 def insert_data(Description, Remind, Dt=None):
-    with conn:
+    c.execute("SELECT * FROM memo WHERE Description = :Description", {'Description': Description})
+    data=c.fetchall()
+    print(len(data))
+    print(len(data)==0)
+    if (len(data)==0):
         c.execute("INSERT INTO memo(Description, Remind, Dt) VALUES (:Description, :Remind, :Dt)", {'Description': Description, 'Remind':Remind, 'Dt': Dt})
+        conn.commit()
+        
 
 def display_data():
     c.execute("SELECT * FROM memo")
     data=c.fetchall()
+    # print(data)
     return data
 
 def fetch_data(Description):
