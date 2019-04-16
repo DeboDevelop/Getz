@@ -3,7 +3,6 @@ from tkinter import *
 import tkinter.messagebox as tmg
 from tkinter import ttk
 from tkcalendar import Calendar, DateEntry
-import random
 #from PIL import Image, ImageTk
 import time
 
