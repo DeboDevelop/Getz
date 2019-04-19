@@ -3,6 +3,7 @@ from tkinter import *
 import tkinter.messagebox as tmg
 from tkinter import ttk
 from tkcalendar import Calendar, DateEntry
+import random
 #from PIL import Image, ImageTk
 import time
 
@@ -12,9 +13,7 @@ import sqlite3
 root = Tk()
 
 root.configure(bg="gray25")
-root.maxsize(700,500)
-root.minsize(700,500)
-root.geometry('700x500')
+root.geometry('500x300')
 root.title("To-Do App")
 
 
@@ -349,43 +348,84 @@ def add_task_with_enter(event):
 
         
 def delete_all():
-    delete_all_data()
+    
     global tasks
-    tasks=[]
-
-    '''call func. to delete all the events in the table'''
-    update_listbox()
+    num_of_tasks=len(tasks)
+    if(num_of_tasks == 0):
+        display["text"]="Please! Enter a task!"
+    else:
+        value = tmg.askquestion("Delete All","Do you want to delete all tasks?")
+        if(value=='yes'):
+            delete_all_data()
+            tasks = []
+            update_listbox()
+            display["text"]="Display"
+            
+            '''call func. to delete all the events in the table'''
+            update_listbox()
 
 def delete():
-    task = lb_tasks.get("active")
-    '''task stores the selected event to be deleted'''
-    delete_data(task)
     global tasks
-    tasks=[]
-    '''First check if the event to be deleted is present in table or not'''
-    '''instead of remove(task),call del. func. to del. event from table'''
-    update_listbox()
-    pos=0
-    ln_tks = len(tasks)
-    while pos is not ln_tks:
-        color_sel(pos)
-        pos+=1
+    num_of_tasks=len(tasks)
+    if(num_of_tasks == 0):
+        display["text"]="Please! Enter a task!"
+    else:
+        value = tmg.askquestion("Delete All","Do you want to delete all tasks?")
+        if(value=='yes'):
+            task = lb_tasks.get("active")
+            '''task stores the selected event to be deleted'''
+            delete_data(task)
+            tasks=[]
+            '''First check if the event to be deleted is present in table or not'''
+            '''instead of remove(task),call del. func. to del. event from table'''
+            update_listbox()
+            pos=0
+            ln_tks = len(tasks)
+            while pos is not ln_tks:
+                color_sel(pos)
+                pos+=1
+                
+def delete_key(event):
+    delete()
     
 def sort_asc():
     global tasks
-    tasks=sort_ascending()
-    clear_listbox()
-    '''instead of tasks[].sort, call a func. to sort the events acc. to date and time in table'''
-    for task in tasks:
-         lb_tasks.insert("end",task)
-
+    num_of_tasks=len(tasks)
+    if(num_of_tasks == 0):
+        display["text"]="Please! Enter a task!"
+    else:
+        
+        tasks=sort_ascending()
+        clear_listbox()
+        '''instead of tasks[].sort, call a func. to sort the events acc. to date and time in table'''
+        for task in tasks:
+             lb_tasks.insert("end",task)
+            
+        pos=0
+        ln_tks = len(tasks)
+        while pos is not ln_tks:
+            color_sel(pos)
+            pos+=1  
+        text_input.delete(0,"end")
+        
 def sort_desc():
     global tasks
-    tasks=sort_descending()
-    clear_listbox()
-    '''instead of tasks[].sort and .reverse(), call a func. to sort in desc. order the events acc. to date and time in table'''
-    for task in tasks:
-         lb_tasks.insert("end",task)
+    num_of_tasks=len(tasks)
+    if(num_of_tasks == 0):
+        display["text"]="Please! Enter a task!"
+    else:
+        tasks=sort_descending()
+        clear_listbox()
+        '''instead of tasks[].sort and .reverse(), call a func. to sort in desc. order the events acc. to date and time in table'''
+        for task in tasks:
+             lb_tasks.insert("end",task)
+             
+        pos=0
+        ln_tks = len(tasks)
+        while pos is not ln_tks:
+            color_sel(pos)
+            pos+=1  
+        text_input.delete(0,"end")
 
 # def choose_random():
 #     task = random.choice(tasks)
@@ -398,12 +438,12 @@ def number_of_tasks():
     display["text"]=msg
 
 def upload():
-    statusvar.set("Wait Please...")
+    statusvar.set("Loading... Wait Please...")
     sbar.update()
     import time
     time.sleep(5)
-    root.maxsize(700,600)
-    root.minsize(700, 400)
+    root.maxsize(700,500)
+    root.minsize(700, 500)
     statusvar.set("Ready Now")
 
 lbl_title = Label(root, text="To-Do List")
@@ -428,7 +468,7 @@ scrollbar.pack(side = RIGHT, fill = Y)
 lb_tasks = Listbox(root, width=82, height=14, bg='white',yscrollcommand = scrollbar.set)
 lb_tasks.place(x = 160, y = 180)
 scrollbar.config( command = lb_tasks.yview )
-
+lb_tasks.bind("<Delete>",delete_key)
 
 
 #other buttons
@@ -470,4 +510,5 @@ ln_tks = len(tasks)
 while pos is not ln_tks:
     color_sel(pos)
     pos+=1
+    
 root.mainloop()
