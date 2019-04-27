@@ -21,12 +21,13 @@ def remind():
     c.execute("SELECT * FROM memo")
     data=c.fetchall()
     for task in data:
+        print(task[3])
         if task[3]!= None:
             # print(type(Dt[3]))
             # print(Dt[3])
-            current_date=str(datetime.datetime.now().replace(microsecond=0))
+            current_date=str(datetime.datetime.now().replace(second=0,microsecond=0))
             # print(type(current_date))
-            # print(current_date)
+            print(current_date)
             if(task[3]==current_date):
                 #Put the Pop-Up Here
                 print("Yes")
@@ -249,7 +250,7 @@ def add_task():
         
         tkvar1 = StringVar(top2)
         tkvar2 = StringVar(top2)
-        tkvar3 = StringVar(top2)
+        #tkvar3 = StringVar(top2)
         tkvar4 = StringVar(top2)
         
         hour = []
@@ -270,7 +271,7 @@ def add_task():
             minute.append(i)
         set2 = "00"
         tkvar2.set(set2)
-        
+        '''
         second = []
         for i in range(0,9):
             a = f"0{i}"
@@ -279,6 +280,7 @@ def add_task():
             second.append(i)
         set3 = "00"
         tkvar3.set(set3)
+        '''
         
         mode = ['AM', 'PM']
         tkvar4.set('AM')
@@ -289,21 +291,21 @@ def add_task():
         popupMenu2 = OptionMenu(top2, tkvar2, *minute)
         popupMenu2.place(x=76, y=40)
         
-        popupMenu3 = OptionMenu(top2, tkvar3, *second)
-        popupMenu3.place(x=136, y=40)
+        #popupMenu3 = OptionMenu(top2, tkvar3, *second)
+        #popupMenu3.place(x=136, y=40)
         
         popupMenu4 = OptionMenu(top2, tkvar4, *mode)
         popupMenu4.place(x=196, y=40)
 
-        ttk.Label(top2, text='HOUR         MIN             SEC            AM/PM        ').pack(padx=16, pady=50)
+        ttk.Label(top2, text='HOUR         MIN                               AM/PM        ').pack(padx=16, pady=50)
         
         def change_dropdown(*args):
-            print(f"{tkvar1.get()} : {tkvar2.get()} : {tkvar3.get()} {tkvar4.get()}")
+            print(f"{tkvar1.get()} : {tkvar2.get()} : {tkvar4.get()}")
             hour=int(tkvar1.get())
             minute=int(tkvar2.get())
-            second=int(tkvar3.get())
+            #second=int(tkvar3.get())
             day_night=tkvar4.get()
-            if day_night=="PM":
+            if day_night=="PM" and hour!=12:
                 hour+=12
             if hour==24:
                 hour=0
@@ -314,7 +316,7 @@ def add_task():
             year=int(date_fetched[0:4])
             month=int(date_fetched[5:7])
             date=int(date_fetched[8:10])
-            Dt = datetime.datetime(year, month, date, hour, minute, second)
+            Dt = datetime.datetime(year, month, date, hour, minute)
             update_dt(task, Dt)
             # print(" ")
             # data=fetch_data(task)
