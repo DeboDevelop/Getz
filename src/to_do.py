@@ -10,6 +10,33 @@ import time
 import datetime
 import sqlite3
 
+# note that there are many other schedulers available
+from apscheduler.schedulers.background import BackgroundScheduler
+
+sched = BackgroundScheduler()
+
+def remind():
+    conn = sqlite3.connect("projects.db")
+    c = conn.cursor()
+    c.execute("SELECT * FROM memo")
+    data=c.fetchall()
+    for task in data:
+        if task[3]!= None:
+            # print(type(Dt[3]))
+            # print(Dt[3])
+            current_date=str(datetime.datetime.now().replace(microsecond=0))
+            # print(type(current_date))
+            # print(current_date)
+            if(task[3]==current_date):
+                #Put the Pop-Up Here
+                print("Yes")
+
+# seconds can be replaced with minutes, hours, or days
+sched.add_job(remind, 'interval', seconds=30)
+sched.start()
+
+# sched.shutdown()
+
 root = Tk()
 
 root.configure(bg="gray25")
