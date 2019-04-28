@@ -27,13 +27,15 @@ def remind():
             # print(Dt[3])
             current_date=str(datetime.datetime.now().replace(second=0,microsecond=0))
             # print(type(current_date))
-            print(current_date)
+            #print(current_date)
             if(task[3]==current_date):
                 #Put the Pop-Up Here
-                print("Yes")
+                #print("Yes")
+                msg = task[1]
+                tmg.showinfo("Reminding You",msg)
 
 # seconds can be replaced with minutes, hours, or days
-sched.add_job(remind, 'interval', seconds=30)
+sched.add_job(remind, 'interval', seconds=59)
 sched.start()
 
 # sched.shutdown()
@@ -42,7 +44,7 @@ root = Tk()
 
 root.configure(bg="gray25")
 root.geometry('500x300')
-root.title("To-Do App")
+root.title("To-Do Zone")
 
 
 def create():
@@ -230,9 +232,13 @@ def add_task():
                 pos+=1
             '''cal.get_date() gets the selected date in format YYYY-MM-DD'''
             '''command=print() func. should be changed to func. table_append_date()'''
-
+            top.destroy()
 
         top = Toplevel(root)
+        top.maxsize(200,140)
+        top.minsize(200,140)
+        top.title("Date-Entry")
+        
         ttk.Label(top, text='Choose date').pack(padx=10, pady=10)
         cal = DateEntry(top, font="Arial 14", selectmode='day', locale='en_US',cursor="hand2")
         cal.pack(fill="both", expand=True)
@@ -246,7 +252,9 @@ def add_task():
         top2 = Toplevel(root)
         top2.maxsize(280,200)
         top2.minsize(280,200)
-        ttk.Label(top2, text='CHOOSE TIME').pack(padx=1, pady=1)
+        top2.title("Time")
+        
+        ttk.Label(top2, text='CHOOSE TIME').pack(padx=1, pady=10)
         
         tkvar1 = StringVar(top2)
         tkvar2 = StringVar(top2)
@@ -289,18 +297,18 @@ def add_task():
         popupMenu1.place(x=16, y=40)
         
         popupMenu2 = OptionMenu(top2, tkvar2, *minute)
-        popupMenu2.place(x=76, y=40)
+        popupMenu2.place(x=107, y=40)
         
         #popupMenu3 = OptionMenu(top2, tkvar3, *second)
         #popupMenu3.place(x=136, y=40)
         
         popupMenu4 = OptionMenu(top2, tkvar4, *mode)
-        popupMenu4.place(x=196, y=40)
+        popupMenu4.place(x=197, y=40)
 
-        ttk.Label(top2, text='HOUR         MIN                               AM/PM        ').pack(padx=16, pady=50)
+        ttk.Label(top2, text='  HOUR                    MIN                     AM/PM    ').pack(padx=16, pady=35)
         
         def change_dropdown(*args):
-            print(f"{tkvar1.get()} : {tkvar2.get()} : {tkvar4.get()}")
+            print(f"{tkvar1.get()} : {tkvar2.get()}   {tkvar4.get()}")
             hour=int(tkvar1.get())
             minute=int(tkvar2.get())
             #second=int(tkvar3.get())
@@ -324,7 +332,7 @@ def add_task():
             # print(date_fetched[0:4])
             # print(date_fetched[5:7])
             # print(date_fetched[8:10])
-
+            top2.destroy()
 
             
          
@@ -332,8 +340,8 @@ def add_task():
         #tkvar2.trace('w', change_dropdown)
         #tkvar3.trace('w', change_dropdown)
         #tkvar4.trace('w', change_dropdown)
-        ttk.Button(top2, text="ok", command=change_dropdown).pack()
-        ttk.Button(top2, text="EXIT", command=top2.destroy).pack()
+        Ok = Button(top2, text="     Ok     ", command=change_dropdown).place(x=107, y=131)
+        Exit = Button(top2, text="    EXIT    ", command=top2.destroy).place(x=107, y=165)
         
     
     task = text_input.get()
@@ -347,12 +355,15 @@ def add_task():
         if(value == 'yes'):
             '''add a func. to append_description WITH date and time from task'''
             newwin = Toplevel(root)
+            newwin.title("Timer-Set")
+            newwin.maxsize(200,140)
+            newwin.minsize(200,140)
             
-            ttk.Button(newwin, text='Date Entry', command=dateentry).pack(padx=10, pady=10)
+            ttk.Button(newwin, text='Date Entry', command=dateentry).place(x=65, y=17)
             '''Calls dateentry()'''
-            ttk.Button(newwin, text='Time', command=addtime).pack(padx=10, pady=10)
+            ttk.Button(newwin, text='Time', command=addtime).place(x=65, y=59)
             '''Calls addtime()'''
-            ttk.Button(newwin, text='EXIT', command=newwin.destroy).pack(padx=10, pady=10)
+            ttk.Button(newwin, text='EXIT', command=newwin.destroy).place(x=65, y=100)
         else:
             msg = "Ok! Fine!"
             tmg.showinfo("As your wish",msg)
@@ -475,7 +486,7 @@ def upload():
     root.minsize(700, 500)
     statusvar.set("Ready Now")
 
-lbl_title = Label(root, text="To-Do List")
+lbl_title = Label(root, text="GetZ")
 lbl_title.config(bg='black', fg='yellow')  
 lbl_title.config(font=('bebas neue', 25))           
 lbl_title.config(height=2)
@@ -484,7 +495,7 @@ lbl_title.pack(fill=X)
 statusvar = StringVar()
 sbar =Label(root, textvariable=statusvar, bg='khaki',relief=SUNKEN, anchor="w")
 sbar.pack(side=BOTTOM, fill=X)
-upload()
+#upload()
 
 
 
