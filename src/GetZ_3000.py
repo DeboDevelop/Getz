@@ -13,6 +13,7 @@ import sqlite3
 # note that there are many other schedulers available
 from apscheduler.schedulers.background import BackgroundScheduler
 
+
 sched = BackgroundScheduler()
 
 def remind():
@@ -21,18 +22,30 @@ def remind():
     c.execute("SELECT * FROM memo")
     data=c.fetchall()
     for task in data:
-        print(task[3])
+        c=0
+        # print(task[3])
         if task[3]!= None:
             # print(type(Dt[3]))
             # print(Dt[3])
             current_date=str(datetime.datetime.now().replace(second=0,microsecond=0))
             # print(type(current_date))
             #print(current_date)
-            if(task[3]==current_date):
+            if(task[3]==current_date and c==0):
                 #Put the Pop-Up Here
-                #print("Yes")
-                msg = task[1]
-                tmg.showinfo("Reminding You",msg)
+                print("Yes")
+                c+=1
+                length=len(task[1])
+
+                reminder = Toplevel(root)
+                reminder.maxsize(length*6+100,140)
+                reminder.minsize(length*6+100,140)
+                reminder.title("Your Task")
+        
+                ttk.Label(reminder, text=task[1]).pack(padx=10, pady=10)
+                Ok = Button(reminder, text="  Ok  ", command=reminder.destroy).pack(pady=40)
+                
+                
+                
 
 # seconds can be replaced with minutes, hours, or days
 sched.add_job(remind, 'interval', seconds=59)
@@ -102,23 +115,24 @@ def delete_all_data():
         c.execute("DELETE from memo") 
 
 def sort_ascending():
-    sort_data=[]
     c.execute("SELECT * FROM memo")
     data=c.fetchall()
-    for d in data:
-        sort_data.append(d[1])
-    sort_data.sort()
-    return sort_data
+    for i in range(0,len(data)):
+        data[i]=list(data[i])
+        data[i][0]=0
+
+    data.sort()
+    return data
 
 def sort_descending():
-    sort_data=[]
     c.execute("SELECT * FROM memo")
     data=c.fetchall()
-    for d in data:
-        sort_data.append(d[1])
-    sort_data.sort()
-    sort_data.reverse()
-    return sort_data
+    for i in range(0,len(data)):
+        data[i]=list(data[i])
+        data[i][0]=0
+    data.sort()
+    data.reverse()
+    return data
 
 def number_of_data():
     c.execute("SELECT * FROM memo")
@@ -190,7 +204,18 @@ def update_listbox():
     tasks=display_data()
     for task in tasks:
         # print(task[1])
-        lb_tasks.insert("end",task[1])
+        if (task[3]!=None):
+            full_task = f"{task[3]} || {task[1]}"
+        else:
+            full_task = f"--- || {task[1]}"
+        lb_tasks.insert("end",full_task)
+        # print(task[1])
+        # print(task[3])
+    pos=0
+    ln_tks = len(tasks)
+    while pos is not ln_tks:
+        color_sel(pos)
+        pos+=1 
     '''the above loop inserts tasks from tasks[] to the LISTBOX'''
     '''instead of loop, it should read description WITH OR WITHOUT date and time'''
     '''Then insert description WITH OR WITHOUT date and time containing date and time to the list box from table'''
@@ -262,7 +287,7 @@ def add_task():
         tkvar4 = StringVar(top2)
         
         hour = []
-        for i in range(1,9):
+        for i in range(1,10):
             a = f"0{i}"
             hour.append(a)
         for i in range(10,13):
@@ -272,7 +297,7 @@ def add_task():
         
         minute = []
         
-        for i in range(0,9):
+        for i in range(0,10):
             a = f"0{i}"
             minute.append(a)
         for i in range(10,60):
@@ -326,6 +351,7 @@ def add_task():
             date=int(date_fetched[8:10])
             Dt = datetime.datetime(year, month, date, hour, minute)
             update_dt(task, Dt)
+            update_listbox()
             # print(" ")
             # data=fetch_data(task)
             # print(data)
@@ -364,6 +390,10 @@ def add_task():
             ttk.Button(newwin, text='Time', command=addtime).place(x=65, y=59)
             '''Calls addtime()'''
             ttk.Button(newwin, text='EXIT', command=newwin.destroy).place(x=65, y=100)
+    
+            
+            
+            
         else:
             msg = "Ok! Fine!"
             tmg.showinfo("As your wish",msg)
@@ -410,9 +440,11 @@ def delete():
     if(num_of_tasks == 0):
         display["text"]="Please! Enter a task!"
     else:
-        value = tmg.askquestion("Delete All","Do you want to delete all tasks?")
+        value = tmg.askquestion("Delete ","Do you want to delete this tasks?")
         if(value=='yes'):
             task = lb_tasks.get("active")
+            index=task.find("||")
+            task=task[index+3:]
             '''task stores the selected event to be deleted'''
             delete_data(task)
             tasks=[]
@@ -439,7 +471,11 @@ def sort_asc():
         clear_listbox()
         '''instead of tasks[].sort, call a func. to sort the events acc. to date and time in table'''
         for task in tasks:
-             lb_tasks.insert("end",task)
+            if (task[3]!=None):
+                full_task = f"{task[3]} || {task[1]}"
+            else:
+                full_task = f"--- || {task[1]}"
+            lb_tasks.insert("end",full_task)
             
         pos=0
         ln_tks = len(tasks)
@@ -458,7 +494,11 @@ def sort_desc():
         clear_listbox()
         '''instead of tasks[].sort and .reverse(), call a func. to sort in desc. order the events acc. to date and time in table'''
         for task in tasks:
-             lb_tasks.insert("end",task)
+            if (task[3]!=None):
+                full_task = f"{task[3]} || {task[1]}"
+            else:
+                full_task = f"--- || {task[1]}"
+            lb_tasks.insert("end",full_task)
              
         pos=0
         ln_tks = len(tasks)
