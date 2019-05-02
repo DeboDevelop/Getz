@@ -205,9 +205,9 @@ def update_listbox():
     for task in tasks:
         # print(task[1])
         if (task[3]!=None):
-            full_task = f"{task[3]} || {task[1]}"
+            full_task = f"{task[3]}     ||     {task[1]}"
         else:
-            full_task = f"--- || {task[1]}"
+            full_task = f"                ---                  ||     {task[1]}"
         lb_tasks.insert("end",full_task)
         # print(task[1])
         # print(task[3])
@@ -440,11 +440,13 @@ def delete():
     if(num_of_tasks == 0):
         display["text"]="Please! Enter a task!"
     else:
-        value = tmg.askquestion("Delete ","Do you want to delete this tasks?")
+        value = tmg.askquestion("Delete ","Do you want to delete this task?")
         if(value=='yes'):
             task = lb_tasks.get("active")
             index=task.find("||")
-            task=task[index+3:]
+            print(index)
+            task=task[index+7:]
+            print(task)
             '''task stores the selected event to be deleted'''
             delete_data(task)
             tasks=[]
