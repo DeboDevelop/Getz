@@ -1,10 +1,8 @@
-#import table
 from tkinter import *
 import tkinter.messagebox as tmg
 from tkinter import ttk
 from tkcalendar import Calendar, DateEntry
 import random
-#from PIL import Image, ImageTk
 import time
 
 import datetime
@@ -23,15 +21,9 @@ def remind():
     data=c.fetchall()
     for task in data:
         c=0
-        # print(task[3])
         if task[3]!= None:
-            # print(type(Dt[3]))
-            # print(Dt[3])
             current_date=str(datetime.datetime.now().replace(second=0,microsecond=0))
-            # print(type(current_date))
-            #print(current_date)
             if(task[3]==current_date and c==0):
-                #Put the Pop-Up Here
                 print("Yes")
                 c+=1
                 length=len(task[1])
@@ -85,7 +77,6 @@ def insert_data(Description, Remind, Dt=None):
 def display_data():
     c.execute("SELECT * FROM memo")
     data=c.fetchall()
-    # print(data)
     return data
 
 def fetch_data(Description):
@@ -139,59 +130,9 @@ def number_of_data():
     data=c.fetchall()
     return len(data)
 
-# def menu():
-#     #create()
-#     while True:
-#         Description=str(input("Enter the description: "))
-#         Remind = int(input("Do you want to Remind. Press 0 for No and Press 1 for Yes: "))
-#         if(Remind==1):
-#             date=int(input("Enter the date: "))
-#             month=int(input("Enter the month: "))
-#             year=int(input("Enter the year: "))
-#             hour=int(input("Enter the hour: "))
-#             minute=int(input("Enter the min: "))
-#             Dt = datetime.datetime(year, month, date, hour, minute, 0)
-#             insert_data(Description, Remind, Dt)
-#         elif(Remind==0):
-#             insert_data(Description, Remind)
-#         wish=int(input("Do you want to Update. Press 0 for No and Press 1 for Yes: "))
-#         if(wish==1):
-#             k=int(input("Press 0 for Update Description and Press 1 for Update Date&Time and Press 2 for Update Both: "))
-#             if(k==0):
-#                 ID=int(input("Enter the ID to Update: "))
-#                 Description=str(input("Enter the description: "))
-#                 update_data(ID, Description)
-#             elif(k==1):
-#                 ID=int(input("Enter the ID to Update: "))
-#                 date=int(input("Enter the date: "))
-#                 month=int(input("Enter the month: "))
-#                 year=int(input("Enter the year: "))
-#                 hour=int(input("Enter the hour: "))
-#                 minute=int(input("Enter the min: "))
-#                 Dt = datetime.datetime(year, month, date, hour, minute, 0)
-#                 update_dt(ID, Dt)
-#             elif(k==2):
-#                 ID=int(input("Enter the ID to Update: "))
-#                 Description=str(input("Enter the description: "))
-#                 date=int(input("Enter the date: "))
-#                 month=int(input("Enter the month: "))
-#                 year=int(input("Enter the year: "))
-#                 hour=int(input("Enter the hour: "))
-#                 minute=int(input("Enter the min: "))
-#                 Dt = datetime.datetime(year, month, date, hour, minute, 0)
-#                 update_data(ID, Description)
-#                 update_dt(ID, Dt)
-#         choice=int(input("Do you want to Insert more. Press 0 for No and Press 1 for Yes: "))
-#         if(choice==0):
-#             break
 
-#     del_id=int(input("Enter the id to delete: "))
-#     delete_data(del_id)
-
-#     display_data()
-#     sort_ascending()
-#     sort_descending()
-    # conn.close()
+#create()
+#conn.close()
 
 tasks=[]
 store=[]
@@ -203,14 +144,11 @@ def update_listbox():
     global tasks
     tasks=display_data()
     for task in tasks:
-        # print(task[1])
         if (task[3]!=None):
             full_task = f"{task[3]}     ||     {task[1]}"
         else:
             full_task = f"                ---                  ||     {task[1]}"
         lb_tasks.insert("end",full_task)
-        # print(task[1])
-        # print(task[3])
     pos=0
     ln_tks = len(tasks)
     while pos is not ln_tks:
@@ -243,13 +181,12 @@ def add_task():
             year=a.strftime("%Y")
             month=a.strftime("%m")
             date=a.strftime("%d")
-            #Dt = datetime.datetime(year, month, date, hour, minute, 0)
             Dt = datetime.datetime(int(year), int(month), int(date), 0, 0, 0)
             store.append( Dt)
             insert_data(task, 1, Dt)
-            #####
+
             update_listbox()
-            ######
+
             pos=0
             ln_tks = len(tasks)
             while pos is not ln_tks:
@@ -283,7 +220,6 @@ def add_task():
         
         tkvar1 = StringVar(top2)
         tkvar2 = StringVar(top2)
-        #tkvar3 = StringVar(top2)
         tkvar4 = StringVar(top2)
         
         hour = []
@@ -304,16 +240,6 @@ def add_task():
             minute.append(i)
         set2 = "00"
         tkvar2.set(set2)
-        '''
-        second = []
-        for i in range(0,9):
-            a = f"0{i}"
-            second.append(a)
-        for i in range(10,60):
-            second.append(i)
-        set3 = "00"
-        tkvar3.set(set3)
-        '''
         
         mode = ['AM', 'PM']
         tkvar4.set('AM')
@@ -324,9 +250,6 @@ def add_task():
         popupMenu2 = OptionMenu(top2, tkvar2, *minute)
         popupMenu2.place(x=107, y=40)
         
-        #popupMenu3 = OptionMenu(top2, tkvar3, *second)
-        #popupMenu3.place(x=136, y=40)
-        
         popupMenu4 = OptionMenu(top2, tkvar4, *mode)
         popupMenu4.place(x=197, y=40)
 
@@ -336,15 +259,13 @@ def add_task():
             print(f"{tkvar1.get()} : {tkvar2.get()}   {tkvar4.get()}")
             hour=int(tkvar1.get())
             minute=int(tkvar2.get())
-            #second=int(tkvar3.get())
+
             day_night=tkvar4.get()
             if day_night=="PM" and hour!=12:
                 hour+=12
             if hour==24:
                 hour=0
             data=fetch_data(task)
-            # print(data)
-            # print(data[0][3])
             date_fetched=data[0][3]
             year=int(date_fetched[0:4])
             month=int(date_fetched[5:7])
@@ -352,20 +273,8 @@ def add_task():
             Dt = datetime.datetime(year, month, date, hour, minute)
             update_dt(task, Dt)
             update_listbox()
-            # print(" ")
-            # data=fetch_data(task)
-            # print(data)
-            # print(date_fetched[0:4])
-            # print(date_fetched[5:7])
-            # print(date_fetched[8:10])
             top2.destroy()
 
-            
-         
-        #tkvar1.trace('w', change_dropdown)
-        #tkvar2.trace('w', change_dropdown)
-        #tkvar3.trace('w', change_dropdown)
-        #tkvar4.trace('w', change_dropdown)
         Ok = Button(top2, text="     Ok     ", command=change_dropdown).place(x=107, y=131)
         Exit = Button(top2, text="    EXIT    ", command=top2.destroy).place(x=107, y=165)
         
@@ -508,10 +417,6 @@ def sort_desc():
             color_sel(pos)
             pos+=1  
         text_input.delete(0,"end")
-
-# def choose_random():
-#     task = random.choice(tasks)
-#     display["text"] = task
      
 def number_of_tasks():
     num_of_tasks=number_of_data()
@@ -538,9 +443,6 @@ statusvar = StringVar()
 sbar =Label(root, textvariable=statusvar, bg='khaki',relief=SUNKEN, anchor="w")
 sbar.pack(side=BOTTOM, fill=X)
 #upload()
-
-
-
 
 #listbox
 
