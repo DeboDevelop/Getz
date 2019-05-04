@@ -8,9 +8,7 @@ import time
 import datetime
 import sqlite3
 
-# note that there are many other schedulers available
 from apscheduler.schedulers.background import BackgroundScheduler
-
 
 sched = BackgroundScheduler()
 
@@ -34,10 +32,7 @@ def remind():
                 reminder.title("Your Task")
         
                 ttk.Label(reminder, text=task[1]).pack(padx=10, pady=10)
-                Ok = Button(reminder, text="  Ok  ", command=reminder.destroy).pack(pady=40)
-                
-                
-                
+                Ok = Button(reminder, text="  Ok  ", command=reminder.destroy).pack(pady=40)        
 
 # seconds can be replaced with minutes, hours, or days
 sched.add_job(remind, 'interval', seconds=59)
@@ -136,9 +131,6 @@ def number_of_data():
 
 tasks=[]
 store=[]
-'''tasks[] stores description of the events as list'''
-
-'''This func. updates LISTBOX of the prog.'''
 def update_listbox():
     clear_listbox()
     global tasks
@@ -154,15 +146,9 @@ def update_listbox():
     while pos is not ln_tks:
         color_sel(pos)
         pos+=1 
-    '''the above loop inserts tasks from tasks[] to the LISTBOX'''
-    '''instead of loop, it should read description WITH OR WITHOUT date and time'''
-    '''Then insert description WITH OR WITHOUT date and time containing date and time to the list box from table'''
-
          
 def clear_listbox():
     lb_tasks.delete(0,"end")
-
-'''This func. Adds task'''
 
 def color_sel(pos):
     if(pos%2 == 0):
@@ -173,7 +159,6 @@ def color_sel(pos):
         lb_tasks.itemconfig(pos, {'fg':'white'})
         
 def add_task():
-    '''This func. updates date'''
     def dateentry():
         
         def app_sel():
@@ -192,8 +177,6 @@ def add_task():
             while pos is not ln_tks:
                 color_sel(pos)
                 pos+=1
-            '''cal.get_date() gets the selected date in format YYYY-MM-DD'''
-            '''command=print() func. should be changed to func. table_append_date()'''
             top.destroy()
 
         top = Toplevel(root)
@@ -207,8 +190,6 @@ def add_task():
         ttk.Button(top, text="ok", command=app_sel).pack()
         ttk.Button(top, text="EXIT", command=top.destroy).pack()
 
-
-    '''This func. updates time(Note- Still incomplete, to be done by AYAN, So no touching)'''
     def addtime():
             
         top2 = Toplevel(root)
@@ -280,33 +261,22 @@ def add_task():
         
     
     task = text_input.get()
-    '''task takes description'''
     if(task!=""):
         value = tmg.askquestion("Added task","Do you want to add timer?")
-        '''Above line asks the user to add reminder or not'''
-        '''if yes= description_append with date and time'''
-        '''if no= description_append WITHOUT date and time'''
         
         if(value == 'yes'):
-            '''add a func. to append_description WITH date and time from task'''
             newwin = Toplevel(root)
             newwin.title("Timer-Set")
             newwin.maxsize(200,140)
             newwin.minsize(200,140)
             
             ttk.Button(newwin, text='Date Entry', command=dateentry).place(x=65, y=17)
-            '''Calls dateentry()'''
             ttk.Button(newwin, text='Time', command=addtime).place(x=65, y=59)
-            '''Calls addtime()'''
             ttk.Button(newwin, text='EXIT', command=newwin.destroy).place(x=65, y=100)
-    
-            
-            
             
         else:
             msg = "Ok! Fine!"
             tmg.showinfo("As your wish",msg)
-            '''add a func. to append_description WITHOUT date and time from task'''
             insert_data(task, 0)
             update_listbox()
         update_listbox()
@@ -321,11 +291,9 @@ def add_task():
     else:
         display["text"]="Please! enter a task"
         
-'''This func. Adds task by pressing enter'''
 def add_task_with_enter(event):
     add_task()
 
-        
 def delete_all():
     
     global tasks
@@ -339,8 +307,6 @@ def delete_all():
             tasks = []
             update_listbox()
             display["text"]="Display"
-            
-            '''call func. to delete all the events in the table'''
             update_listbox()
 
 def delete():
@@ -356,11 +322,8 @@ def delete():
             print(index)
             task=task[index+7:]
             print(task)
-            '''task stores the selected event to be deleted'''
             delete_data(task)
             tasks=[]
-            '''First check if the event to be deleted is present in table or not'''
-            '''instead of remove(task),call del. func. to del. event from table'''
             update_listbox()
             pos=0
             ln_tks = len(tasks)
@@ -377,10 +340,8 @@ def sort_asc():
     if(num_of_tasks == 0):
         display["text"]="Please! Enter a task!"
     else:
-        
         tasks=sort_ascending()
         clear_listbox()
-        '''instead of tasks[].sort, call a func. to sort the events acc. to date and time in table'''
         for task in tasks:
             if (task[3]!=None):
                 full_task = f"{task[3]} || {task[1]}"
@@ -403,7 +364,6 @@ def sort_desc():
     else:
         tasks=sort_descending()
         clear_listbox()
-        '''instead of tasks[].sort and .reverse(), call a func. to sort in desc. order the events acc. to date and time in table'''
         for task in tasks:
             if (task[3]!=None):
                 full_task = f"{task[3]} || {task[1]}"
@@ -420,7 +380,6 @@ def sort_desc():
      
 def number_of_tasks():
     num_of_tasks=number_of_data()
-    '''instead of len(tasks), call a func. to return the no. of events in table'''
     msg = "Number of tasks: %s" % num_of_tasks
     display["text"]=msg
 
