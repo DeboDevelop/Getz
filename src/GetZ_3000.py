@@ -50,16 +50,19 @@ root.title("To-Do Zone")
 
 
 def create():
-    c.execute("""CREATE TABLE memo (
+    c.execute("""CREATE TABLE IF NOT EXISTS memo (
                 ID Integer PRIMARY KEY AUTOINCREMENT,
                 Description text,
                 Remind integer,
                 Dt integer
                 )""")
-    
+
+  
 conn = sqlite3.connect("projects.db")
 
 c = conn.cursor()
+
+create()
 
 def insert_data(Description, Remind, Dt=None):
     c.execute("SELECT * FROM memo WHERE Description = :Description", {'Description': Description})
@@ -128,7 +131,7 @@ def number_of_data():
     return len(data)
 
 
-#create()
+
 #conn.close()
 
 tasks=[]
