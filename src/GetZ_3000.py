@@ -32,7 +32,9 @@ def remind():
                 reminder.title("Your Task")
         
                 ttk.Label(reminder, text=task[1]).pack(padx=10, pady=10)
-                Ok = Button(reminder, text="  Ok  ", command=reminder.destroy).pack(pady=40)        
+                Ok = Button(reminder, text="  OK  ", command=reminder.destroy).pack(pady=40)
+                reminder.protocol("WM_DELETE_WINDOW", reminder.destroy)
+                    
 
 # seconds can be replaced with minutes, hours, or days
 sched.add_job(remind, 'interval', seconds=59)
@@ -187,7 +189,7 @@ def add_task():
         ttk.Label(top, text='Choose date').pack(padx=10, pady=10)
         cal = DateEntry(top, font="Arial 14", selectmode='day', locale='en_US',cursor="hand2")
         cal.pack(fill="both", expand=True)
-        ttk.Button(top, text="ok", command=app_sel).pack()
+        ttk.Button(top, text="OK", command=app_sel).pack()
         ttk.Button(top, text="EXIT", command=top.destroy).pack()
 
     def addtime():
@@ -256,7 +258,7 @@ def add_task():
             update_listbox()
             top2.destroy()
 
-        Ok = Button(top2, text="     Ok     ", command=change_dropdown).place(x=107, y=131)
+        Ok = Button(top2, text="     OK     ", command=change_dropdown).place(x=107, y=131)
         Exit = Button(top2, text="    EXIT    ", command=top2.destroy).place(x=107, y=165)
         
     
@@ -344,9 +346,9 @@ def sort_asc():
         clear_listbox()
         for task in tasks:
             if (task[3]!=None):
-                full_task = f"{task[3]} || {task[1]}"
+                full_task = f"{task[3]}     ||     {task[1]}"
             else:
-                full_task = f"--- || {task[1]}"
+                full_task = f"                ---                  ||     {task[1]}"
             lb_tasks.insert("end",full_task)
             
         pos=0
@@ -366,9 +368,9 @@ def sort_desc():
         clear_listbox()
         for task in tasks:
             if (task[3]!=None):
-                full_task = f"{task[3]} || {task[1]}"
+                full_task = f"{task[3]}     ||     {task[1]}"
             else:
-                full_task = f"--- || {task[1]}"
+                full_task = f"                ---                  ||     {task[1]}"
             lb_tasks.insert("end",full_task)
              
         pos=0
@@ -401,7 +403,7 @@ lbl_title.pack(fill=X)
 statusvar = StringVar()
 sbar =Label(root, textvariable=statusvar, bg='khaki',relief=SUNKEN, anchor="w")
 sbar.pack(side=BOTTOM, fill=X)
-#upload()
+upload()
 
 #listbox
 
