@@ -46,6 +46,6 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 
 - [DeboDevelop](https://github.com/DeboDevelop)
 - Ayan Pan
-- Chayan Pal
+- [CGreenP](https://github.com/CGreenP)
 - Prithul Banerjee
 - Arkajit Roy
