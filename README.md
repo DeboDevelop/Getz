@@ -48,4 +48,4 @@ Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduc
 - Ayan Pan
 - [CGreenP](https://github.com/CGreenP)
 - Prithul Banerjee
-- Arkajit Roy
+- [arkajitroy](https://github.com/arkajitroy)
